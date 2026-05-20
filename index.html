@@ -15,13 +15,14 @@
             --petal-mid: #ff4d6d;
             --petal-deep: #a4133c;
             --stem-color: #800f2f;
-            --flower-scale: 0.85; 
-            --btn-bottom: 12vh;
+            
+            --flower-scale: 1.1; 
+            --btn-bottom: 8vh;
         }
 
-        @media (min-width: 480px) { :root { --flower-scale: 0.95; --btn-bottom: 12vh; } }
-        @media (min-width: 768px) { :root { --flower-scale: 1.15; --btn-bottom: 15vh; } }
-        @media (min-width: 1024px) { :root { --flower-scale: 1.35; --btn-bottom: 15vh; } }
+        @media (min-width: 480px) { :root { --flower-scale: 1.2; --btn-bottom: 8vh; } }
+        @media (min-width: 768px) { :root { --flower-scale: 1.4; --btn-bottom: 12vh; } }
+        @media (min-width: 1024px) { :root { --flower-scale: 1.6; --btn-bottom: 12vh; } }
 
         body {
             margin: 0; padding: 0;
@@ -32,19 +33,30 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* ── 1. GLOBAL BACKGROUND ── */
+        /* ── GLOBAL BACKGROUND ── */
         .night {
             position: fixed; inset: 0; width: 100%; height: 100%; filter: blur(0.1vmin);
             z-index: 0; 
             background-image: radial-gradient(ellipse at top, transparent 0%, var(--dark-color)), radial-gradient(ellipse at bottom, var(--dark-color), rgba(255, 105, 180, 0.15)), repeating-linear-gradient(220deg, black 0px, black 19px, transparent 19px, transparent 22px), repeating-linear-gradient(189deg, black 0px, black 19px, transparent 19px, transparent 22px), repeating-linear-gradient(148deg, black 0px, black 19px, transparent 19px, transparent 22px), linear-gradient(90deg, #ff1e56, #f0f0f0);
         }
 
-        /* ── 2. PHASE 1 (TAMAN BUNGA & TOMBOL) ── */
+        /* ── PHASE 1 (TAMAN BUNGA & TOMBOL) ── */
         #phase-1 {
             position: absolute; inset: 0; z-index: 10;
             display: flex; justify-content: center; align-items: flex-end;
             transition: opacity 0.5s ease;
         }
+
+        /* TEKS JANGKAR PENYEIMBANG LANGIT */
+        .hero-text {
+            position: absolute; top: 15vh; width: 100%; text-align: center; z-index: 5;
+            opacity: 0; animation: fadeInText 3s ease 2s forwards;
+        }
+        .hero-text p {
+            font-family: 'Playfair Display', serif; color: rgba(255, 204, 213, 0.6); 
+            font-style: italic; font-size: 1.3rem; letter-spacing: 0.15em;
+        }
+        @keyframes fadeInText { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
 
         .action-container {
             position: absolute; bottom: var(--btn-bottom); left: 0; width: 100%;
@@ -53,52 +65,104 @@
         }
 
         .btn-lanjut {
-            background: rgba(255, 77, 109, 0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 179, 198, 0.4); color: #ffccd5;
+            background: rgba(201, 24, 74, 0.25); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 179, 198, 0.5); color: #ffccd5;
             padding: clamp(12px, 2vh, 16px) clamp(32px, 5vw, 48px);
             border-radius: 50px; font-family: 'Playfair Display', serif;
             font-size: clamp(1rem, 2.5vw, 1.2rem); font-style: italic; cursor: pointer; letter-spacing: 0.1em;
-            box-shadow: 0 4px 20px rgba(201, 24, 74, 0.4); transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 179, 198, 0.2); 
+            transition: all 0.4s ease;
         }
 
         .btn-lanjut:hover {
-            background: rgba(255, 77, 109, 0.3); border-color: #ffccd5; color: #fff;
+            background: rgba(255, 77, 109, 0.4); border-color: #fff; color: #fff;
             transform: translateY(-5px) scale(1.02); box-shadow: 0 8px 30px rgba(255, 77, 109, 0.6);
         }
 
         @keyframes fadeInBtn { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
 
+        /* ── KONTROL BUKET ── */
         .flowers { 
-            position: absolute; bottom: 0; left: 50%;
+            position: absolute; 
+            bottom: 12vh; 
+            left: 50%;
             transform: translateX(-50%) scale(var(--flower-scale)); 
-            transform-origin: bottom center; transition: transform 0.3s ease; 
+            transform-origin: bottom center;
+            transition: transform 0.3s ease;
+            /* GPU layer siap sejak awal agar zoom tidak tersendat */
+            will-change: transform, filter;
         }
 
-        /* STRUKTUR BUNGA TAMAN */
-        .flower { position: absolute; bottom: 10vmin; transform-origin: bottom center; z-index: 10; --fl-speed: 0.8s; }
-        .flower--1 { left: 50%; transform: translateX(-50%); animation: moving-flower-1 4s linear infinite; z-index: 12; }
-        .flower--2 { left: 50%; transform: translateX(-50%) rotate(15deg) scale(0.9); animation: moving-flower-2 4.2s linear infinite; z-index: 11; }
-        .flower--3 { left: 50%; transform: translateX(-50%) rotate(-15deg) scale(0.9); animation: moving-flower-3 4.1s linear infinite; z-index: 11; }
-        .flower--4 { left: 50%; bottom: 6vmin; transform: translateX(-50%) rotate(32deg) scale(0.8) translateX(5vmin); animation: moving-flower-1 4.5s linear infinite; z-index: 10; }
-        .flower--5 { left: 50%; bottom: 6vmin; transform: translateX(-50%) rotate(-32deg) scale(0.8) translateX(-5vmin); animation: moving-flower-2 4.4s linear infinite; z-index: 10; }
-        .flower--6 { left: 50%; bottom: 3vmin; transform: translateX(-50%) rotate(5deg) scale(0.75); animation: moving-flower-3 3.8s linear infinite; z-index: 13; }
-        .flower--7 { left: 50%; bottom: 4vmin; transform: translateX(-50%) rotate(-25deg) scale(0.7) translateX(-10vmin); animation: moving-flower-1 4.3s linear infinite; z-index: 14; }
-        .flower--8 { left: 50%; bottom: 4vmin; transform: translateX(-50%) rotate(25deg) scale(0.7) translateX(10vmin); animation: moving-flower-2 4.6s linear infinite; z-index: 14; }
-        .flower--9 { left: 50%; bottom: 14vmin; transform: translateX(-50%) rotate(-22deg) scale(0.85) translateX(-8vmin); animation: moving-flower-3 4.7s linear infinite; z-index: 8; opacity: 0.85; filter: blur(1px); }
-        .flower--10{ left: 50%; bottom: 14vmin; transform: translateX(-50%) rotate(22deg) scale(0.85) translateX(8vmin); animation: moving-flower-1 4.8s linear infinite; z-index: 8; opacity: 0.85; filter: blur(1px); }
+        /* ══════════════════════════════════════════════════
+           CAMERA PUSH-THROUGH TRANSITION
+           Zoom sinematik menembus kelopak .flower--1
+           transform-origin di-override via JS secara dinamis
+           ══════════════════════════════════════════════════ */
+        .flowers.push-through {
+            /*
+             * translateX(-50%) dipertahankan agar elemen tidak lompat.
+             * scale(80) — cukup besar untuk menenggelamkan seluruh layar
+             * dengan warna kelopak asli tanpa overlay buatan.
+             */
+            transform: translateX(-50%) scale(80) !important;
 
-        .flower--1 .flower__line { height: 70vmin; animation-delay: 0.3s; }
-        .flower--2 .flower__line { height: 65vmin; animation-delay: 0.6s; }
-        .flower--3 .flower__line { height: 65vmin; animation-delay: 0.9s; }
-        .flower--4 .flower__line { height: 55vmin; animation-delay: 1.2s; }
-        .flower--5 .flower__line { height: 55vmin; animation-delay: 1.4s; }
-        .flower--6 .flower__line { height: 50vmin; animation-delay: 1.6s; }
-        .flower--7 .flower__line { height: 45vmin; animation-delay: 1.8s; }
-        .flower--8 .flower__line { height: 45vmin; animation-delay: 2.0s; }
-        .flower--9 .flower__line { height: 75vmin; animation-delay: 0.5s; }
-        .flower--10 .flower__line{ height: 75vmin; animation-delay: 0.7s; }
+            /*
+             * Depth-of-Field (DoF) makro:
+             * blur + brightness meniru lensa kamera yang menghunjam kelopak.
+             */
+            filter: blur(28px) brightness(1.4) saturate(1.2) !important;
 
-        .flower__leafs { position: relative; animation: blooming-flower 2s backwards; }
+            /*
+             * Easing sinematik:
+             * - transform: lambat → meledak di tengah  (cinematic push feel)
+             * - filter   : blur datang lebih cepat dari zoom (DoF natural)
+             */
+            transition:
+                transform 1.8s cubic-bezier(0.12, 0.02, 0.06, 1.0),
+                filter    1.4s cubic-bezier(0.5,  0.0,  0.9,  1.0) !important;
+        }
+
+        /* Bekukan sway agar titik fokus tidak bergeser saat zoom berlangsung */
+        .flowers.push-through .flower,
+        .flowers.push-through .flower__leafs,
+        .flowers.push-through .flower__light,
+        .flowers.push-through .growing-grass {
+            animation-play-state: paused !important;
+        }
+
+        .flower { 
+            position: absolute; bottom: 2vmin; left: 50%; 
+            transform-origin: bottom center; z-index: 10; 
+            --base-rot: 0deg; --base-scale: 1; --base-y: 0vmin;
+            transform: translateX(-50%) translateY(var(--base-y)) rotate(var(--base-rot)) scale(var(--base-scale));
+            animation: bouquet-sway var(--fl-speed, 4s) ease-in-out infinite;
+        }
+
+        /* ── FORMASI Z-INDEX BUKET ── */
+        .flower--1 { --base-rot: 0deg;   --base-scale: 1.1;  --base-y: 0vmin;   z-index: 2; --fl-speed: 4s; }
+        .flower--2 { --base-rot: 14deg;  --base-scale: 1;    --base-y: 0vmin;   z-index: 3; --fl-speed: 4.2s; }
+        .flower--3 { --base-rot: -14deg; --base-scale: 1;    --base-y: 0vmin;   z-index: 3; --fl-speed: 4.1s; }
+        .flower--4 { --base-rot: 26deg;  --base-scale: 0.9;  --base-y: 1vmin;   z-index: 4; --fl-speed: 4.5s; }
+        .flower--5 { --base-rot: -26deg; --base-scale: 0.9;  --base-y: 1vmin;   z-index: 4; --fl-speed: 4.4s; }
+        .flower--6 { --base-rot: 38deg;  --base-scale: 0.8;  --base-y: 2vmin;   z-index: 5; --fl-speed: 4.6s; }
+        .flower--7 { --base-rot: -38deg; --base-scale: 0.8;  --base-y: 2vmin;   z-index: 5; --fl-speed: 4.3s; }
+        .flower--8 { --base-rot: 7deg;   --base-scale: 0.95; --base-y: 3vmin;   z-index: 6; --fl-speed: 3.8s; } 
+        .flower--9 { --base-rot: -18deg; --base-scale: 0.85; --base-y: 3vmin;   z-index: 6; --fl-speed: 4.7s; }
+        .flower--10{ --base-rot: 18deg;  --base-scale: 0.85; --base-y: 3vmin;   z-index: 6; --fl-speed: 4.8s; }
+
+        .flower--1 .flower__line { height: 60vmin; animation-delay: 0.3s; }
+        .flower--2 .flower__line { height: 58vmin; animation-delay: 0.6s; }
+        .flower--3 .flower__line { height: 58vmin; animation-delay: 0.9s; }
+        .flower--4 .flower__line { height: 52vmin; animation-delay: 1.2s; }
+        .flower--5 .flower__line { height: 52vmin; animation-delay: 1.4s; }
+        .flower--6 .flower__line { height: 46vmin; animation-delay: 1.6s; }
+        .flower--7 .flower__line { height: 46vmin; animation-delay: 1.8s; }
+        .flower--8 .flower__line { height: 42vmin; animation-delay: 2.0s; }
+        .flower--9 .flower__line { height: 40vmin; animation-delay: 0.5s; }
+        .flower--10 .flower__line{ height: 40vmin; animation-delay: 0.7s; }
+
+        .flower__leafs { position: relative; z-index: 2; animation: blooming-flower 2s backwards; }
         .flower--1 .flower__leafs { animation-delay: 1.1s; }
         .flower--2 .flower__leafs { animation-delay: 1.4s; }
         .flower--3 .flower__leafs { animation-delay: 1.7s; }
@@ -134,12 +198,83 @@
         .flower__white-circle { position: absolute; left: -3.5vmin; top: -3vmin; width: 9vmin; height: 4vmin; border-radius: 50%; background-color: #fff; }
         .flower__white-circle::after { content: ""; position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); width: 60%; height: 60%; border-radius: inherit; background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 12px), linear-gradient(90deg, #ffb3c6, #ff758f); }
         
-        .flower__line { width: 1.5vmin; background-image: linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent, rgba(255, 255, 255, 0.2)), linear-gradient(to top, transparent 10%, var(--stem-color), var(--petal-dark)); box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5); animation: grow-flower-tree 4s backwards; }
-        .flower__line__leaf { --w: 7vmin; --h: calc(var(--w) + 2vmin); position: absolute; top: 20%; left: 90%; width: var(--w); height: var(--h); border-top-right-radius: var(--h); border-bottom-left-radius: var(--h); background-image: linear-gradient(to top, rgba(128, 15, 47, 0.4), var(--petal-dark)); }
-        .flower__line__leaf--1 { transform: rotate(70deg) rotateY(30deg); }
-        .flower__line__leaf--2 { top: 45%; transform: rotate(70deg) rotateY(30deg); }
-        .flower__line__leaf--3 { border-top-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: var(--h); border-bottom-right-radius: var(--h); left: -460%; top: 12%; transform: rotate(-70deg) rotateY(30deg); }
-        .flower__line__leaf--4 { top: 40%; left: -460%; border-top-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: var(--h); border-bottom-right-radius: var(--h); transform: rotate(-70deg) rotateY(30deg); }
+        /* ── TANGKAI MELENGKUNG ── */
+        .flower__line { 
+            width: 1.5vmin; margin-left: -0.75vmin;
+            position: relative; z-index: 1; 
+            background-image: linear-gradient(to top, transparent 10%, var(--stem-color), var(--petal-dark)); 
+            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5); 
+            transform-origin: bottom center;
+            animation: grow-flower-tree 4s backwards; 
+        }
+
+        .flower--2 .flower__line, .flower--4 .flower__line, .flower--6 .flower__line, .flower--8 .flower__line, .flower--10 .flower__line {
+            width: 6vmin; margin-left: -3vmin; 
+            background-image: none; box-shadow: none;
+            border-right: 1.5vmin solid var(--stem-color);
+            border-radius: 50%; 
+        }
+
+        .flower--3 .flower__line, .flower--5 .flower__line, .flower--7 .flower__line, .flower--9 .flower__line {
+            width: 6vmin; margin-left: -3vmin;
+            background-image: none; box-shadow: none;
+            border-left: 1.5vmin solid var(--stem-color);
+            border-radius: 50%;
+        }
+
+        /* ── DAUN LENTUR ── */
+        .flower__line__leaf { 
+            --w: 7vmin; --h: calc(var(--w) + 2vmin); 
+            position: absolute; top: 20%; 
+            width: var(--w); height: var(--h); 
+            border-top-right-radius: var(--h); border-bottom-left-radius: var(--h); 
+            background-image: linear-gradient(to top, rgba(128, 15, 47, 0.4), var(--petal-dark)); 
+            transform-origin: left center;
+            animation: swayLeaf 2.4s ease-in-out infinite;
+            animation-delay: inherit;
+        }
+
+        .flower__line__leaf--1 { transform: rotate(70deg) rotateY(30deg); animation-delay: 0.2s; }
+        .flower__line__leaf--2 { top: 45%; transform: rotate(70deg) rotateY(30deg); animation-delay: 0.2s; }
+        .flower__line__leaf--3 { 
+            border-top-right-radius: 0; border-bottom-left-radius: 0; 
+            border-top-left-radius: var(--h); border-bottom-right-radius: var(--h); 
+            top: 12%; transform: rotate(-70deg) rotateY(30deg); 
+            transform-origin: right center; animation-delay: 0.4s; 
+        }
+        .flower__line__leaf--4 { 
+            border-top-right-radius: 0; border-bottom-left-radius: 0; 
+            border-top-left-radius: var(--h); border-bottom-right-radius: var(--h); 
+            top: 40%; transform: rotate(-70deg) rotateY(30deg); 
+            transform-origin: right center; animation-delay: 0.4s; 
+        }
+
+        .flower--1 .flower__line__leaf--1, .flower--1 .flower__line__leaf--2,
+        .flower--2 .flower__line__leaf--1, .flower--4 .flower__line__leaf--1, .flower--6 .flower__line__leaf--1, .flower--8 .flower__line__leaf--1, .flower--10 .flower__line__leaf--1,
+        .flower--2 .flower__line__leaf--2, .flower--4 .flower__line__leaf--2, .flower--6 .flower__line__leaf--2, .flower--8 .flower__line__leaf--2, .flower--10 .flower__line__leaf--2 {
+            left: 100%; 
+        }
+        .flower--1 .flower__line__leaf--3, .flower--1 .flower__line__leaf--4,
+        .flower--2 .flower__line__leaf--3, .flower--4 .flower__line__leaf--3, .flower--6 .flower__line__leaf--3, .flower--8 .flower__line__leaf--3, .flower--10 .flower__line__leaf--3,
+        .flower--2 .flower__line__leaf--4, .flower--4 .flower__line__leaf--4, .flower--6 .flower__line__leaf--4, .flower--8 .flower__line__leaf--4, .flower--10 .flower__line__leaf--4 {
+            right: 0%; left: auto;
+        }
+
+        .flower--3 .flower__line__leaf--1, .flower--5 .flower__line__leaf--1, .flower--7 .flower__line__leaf--1, .flower--9 .flower__line__leaf--1,
+        .flower--3 .flower__line__leaf--2, .flower--5 .flower__line__leaf--2, .flower--7 .flower__line__leaf--2, .flower--9 .flower__line__leaf--2 {
+            left: 0%;
+        }
+        .flower--3 .flower__line__leaf--3, .flower--5 .flower__line__leaf--3, .flower--7 .flower__line__leaf--3, .flower--9 .flower__line__leaf--3,
+        .flower--3 .flower__line__leaf--4, .flower--5 .flower__line__leaf--4, .flower--7 .flower__line__leaf--4, .flower--9 .flower__line__leaf--4 {
+            right: 100%; left: auto;
+        }
+        
+        @keyframes swayLeaf {
+            0%   { transform: rotate(0deg) translateY(0); }
+            40%  { transform: rotate(3.5deg) translateY(-0.5vmin); }
+            80%  { transform: rotate(-4.2deg) translateY(0.4vmin); }
+            100% { transform: rotate(0deg) translateY(0); }
+        }
         
         .flower__light { position: absolute; bottom: 0vmin; width: 1vmin; height: 1vmin; background-color: #fffb00; border-radius: 50%; filter: blur(0.2vmin); animation: light-ans 4s linear infinite backwards; }
         .flower__light:nth-child(odd) { background-color: var(--petal-light); }
@@ -148,9 +283,13 @@
         .flower__light--3 { left: -6vmin; animation-delay: 0.3s; }
         .flower__light--4 { left: 6vmin; animation-delay: 0.9s; }
         
-        .flower__grass { --c: var(--petal-dark); --line-w: 1.5vmin; position: absolute; bottom: 12vmin; left: -7vmin; display: flex; flex-direction: column; align-items: flex-end; z-index: 20; transform-origin: bottom center; transform: rotate(-48deg) rotateY(40deg); }
+        /* RUMPUT BERDAUN */
+        .flower__grass { 
+            --c: var(--petal-dark); --line-w: 1.5vmin; position: absolute; bottom: 12vmin; left: -7vmin; display: flex; flex-direction: column; align-items: flex-end; 
+            z-index: 7; transform-origin: bottom center; transform: rotate(-48deg) rotateY(40deg); 
+        }
         .flower__grass--1 { animation: moving-grass 2s linear infinite; }
-        .flower__grass--2 { left: 2vmin; bottom: 10vmin; transform: scale(0.5) rotate(75deg) rotateX(10deg) rotateY(-200deg); opacity: 0.8; z-index: 0; animation: moving-grass--2 1.5s linear infinite; }
+        .flower__grass--2 { left: 2vmin; bottom: 10vmin; transform: scale(0.5) rotate(75deg) rotateX(10deg) rotateY(-200deg); opacity: 0.8; z-index: 1; animation: moving-grass--2 1.5s linear infinite; }
         .flower__grass--top { width: 7vmin; height: 10vmin; border-top-right-radius: 100%; border-right: var(--line-w) solid var(--c); transform-origin: bottom center; transform: rotate(-2deg); }
         .flower__grass--bottom { margin-top: -2px; width: var(--line-w); height: 25vmin; background-image: linear-gradient(to top, transparent, var(--c)); }
         .flower__grass__leaf { --size: 10vmin; position: absolute; width: calc(var(--size) * 2.1); height: var(--size); border-top-left-radius: var(--size); border-top-right-radius: var(--size); background-image: linear-gradient(to top, transparent, transparent 30%, var(--c)); z-index: 100; }
@@ -160,9 +299,10 @@
         .flower__grass__leaf--4 { top: 6%; left: -135%; --size: 8vmin; transform: rotate(2deg); animation: growing-grass-ans--4 2s 2s linear backwards; }
         .flower__grass__overlay { position: absolute; top: -10%; right: 0%; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); filter: blur(1.5vmin); z-index: 100; }
 
-        @keyframes moving-flower-1 { 0%, 100% { transform: translateX(-50%) rotate(2deg); } 50% { transform: translateX(-50%) rotate(-2deg); } }
-        @keyframes moving-flower-2 { 0%, 100% { transform: translateX(-50%) rotate(18deg); } 50% { transform: translateX(-50%) rotate(14deg); } }
-        @keyframes moving-flower-3 { 0%, 100% { transform: translateX(-50%) rotate(-18deg); } 50% { transform: translateX(-50%) rotate(-20deg); } }
+        @keyframes bouquet-sway {
+            0%, 100% { transform: translateX(-50%) translateY(var(--base-y)) rotate(calc(var(--base-rot) + 1.5deg)) scale(var(--base-scale)); }
+            50%      { transform: translateX(-50%) translateY(var(--base-y)) rotate(calc(var(--base-rot) - 1.5deg)) scale(var(--base-scale)); }
+        }
         @keyframes growing-grass-ans--1 { 0% { transform-origin: bottom left; transform: rotate(-20deg) scale(0); } }
         @keyframes growing-grass-ans--2 { 0% { transform-origin: bottom right; transform: rotate(10deg) scale(0); } }
         @keyframes growing-grass-ans--3 { 0% { transform-origin: bottom left; transform: rotate(-18deg) rotateX(-20deg) scale(0); } }
@@ -178,78 +318,12 @@
         @keyframes growing-grass-ans { 0% { transform: scale(0); } }
         .not-loaded * { animation-play-state: paused !important; }
 
-        /* ── 3. THE 3D PERSPECTIVE BLOOM ENGINE (Karya Seni Murni) ── */
-        #hero-bloom {
-            position: fixed; top: 50%; left: 50%;
-            width: 0; height: 0; z-index: 500; pointer-events: none;
-            /* Injeksi ruang 3D yang sangat penting */
-            perspective: 800px; transform-style: preserve-3d;
-            transition: opacity 1s ease;
-        }
-
-        .hero-petal {
-            position: absolute; bottom: 0; left: -15vmin;
-            width: 30vmin; height: 45vmin;
-            /* Menggunakan rumus kelopak mawar otentik yang Anda buat */
-            border-radius: 51% 49% 47% 53%/44% 45% 55% 69%;
-            background-image: linear-gradient(to top, var(--petal-deep), var(--petal-light));
-            transform-origin: bottom center;
-            opacity: 0;
-            
-            /* POSISI AWAL (KUNCUP): Menghadap ke kamera (90 derajat vertikal) */
-            transform: rotateZ(var(--rz)) rotateX(90deg) scale(0);
-        }
-
-        
-
-        /* Enam arah penjuru angin */
-        .hero-petal:nth-child(1) { --rz: 0deg; }
-        .hero-petal:nth-child(2) { --rz: 60deg; }
-        .hero-petal:nth-child(3) { --rz: 120deg; }
-        .hero-petal:nth-child(4) { --rz: 180deg; }
-        .hero-petal:nth-child(5) { --rz: 240deg; }
-        .hero-petal:nth-child(6) { --rz: 300deg; }
-
-        /* Inti Mawar (Putik) */
-        .hero-core {
-            position: absolute; top: -5vmin; left: -5vmin;
-            width: 10vmin; height: 10vmin; border-radius: 50%;
-            background: radial-gradient(circle, var(--petal-deep) 0%, var(--dark-color) 70%);
-            opacity: 0; transform: translateZ(-10px) scale(0);
-        }
-
-        /* EKSEKUSI ANIMASI MEKAR KETIKA TRIGGERED */
-        #hero-bloom.expand {
-            /* Kamera Zoom in perlahan ke arah bunga */
-            animation: camera-zoom 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        #hero-bloom.expand .hero-petal {
-            opacity: 1;
-            /* Kelopak jatuh terbuka ke belakang (-10 derajat) secara organik seperti pegas */
-            transform: rotateZ(var(--rz)) rotateX(-10deg) scale(1);
-            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s, opacity 0.3s;
-        }
-
-        #hero-bloom.expand .hero-core {
-            opacity: 1;
-            /* Inti membesar untuk menjadi pelapis transisi ke halaman surat */
-            transform: translateZ(50px) scale(100);
-            transition: transform 1s cubic-bezier(0.5, 0, 0, 1) 0.8s, opacity 0.3s;
-        }
-
-        @keyframes camera-zoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(4); }
-        }
-
-        /* ── 4. PHASE 2 (SURAT AFIRMASI MESIN TIK) ── */
+        /* ── PHASE 2 (SURAT AFIRMASI MESIN TIK) ── */
         #phase-2 {
             position: fixed; inset: 0; z-index: 100;
             display: flex; justify-content: center; align-items: center;
             opacity: 0; pointer-events: none;
-            background-color: transparent; 
-            transition: opacity 1s ease; padding: 24px;
+            background-color: transparent; transition: opacity 1s ease; padding: 24px;
         }
         #phase-2.active { opacity: 1; pointer-events: auto; }
 
@@ -257,16 +331,14 @@
             background: rgba(20, 5, 10, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 179, 198, 0.2);
             padding: 40px; border-radius: 24px;
-            max-width: 600px; width: 100%;
-            color: #ffccd5; text-align: left;
+            max-width: 600px; width: 100%; color: #ffccd5; text-align: left;
             box-shadow: 0 20px 50px rgba(0,0,0,0.7);
             transform: translateY(30px); transition: transform 1.2s ease 0.5s;
         }
         #phase-2.active .letter-card { transform: translateY(0); }
 
         .letter-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem; font-style: italic; color: var(--petal-mid);
+            font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; color: var(--petal-mid);
             margin-bottom: 20px; border-bottom: 1px solid rgba(255, 77, 109, 0.3); padding-bottom: 10px;
         }
 
@@ -279,20 +351,14 @@
 <body class="not-loaded">
 
     <div class="night"></div>
-
     <audio id="bg-music" src="lagu-acel.mp3" loop></audio>
 
-    <div id="hero-bloom">
-        <div class="hero-petal"></div>
-        <div class="hero-petal"></div>
-        <div class="hero-petal"></div>
-        <div class="hero-petal"></div>
-        <div class="hero-petal"></div>
-        <div class="hero-petal"></div>
-        <div class="hero-core"></div>
-    </div>
-
     <div id="phase-1">
+        
+        <div class="hero-text">
+            <p>Untuk yang telah berjuang...</p>
+        </div>
+
         <div class="flowers">
             <div class="flower flower--1"><div class="flower__leafs"><div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div><div class="flower__leaf flower__leaf--3"></div><div class="flower__leaf flower__leaf--4"></div><div class="flower__white-circle"></div><div class="flower__light flower__light--1"></div><div class="flower__light flower__light--2"></div><div class="flower__light flower__light--3"></div><div class="flower__light flower__light--4"></div></div><div class="flower__line"><div class="flower__line__leaf flower__line__leaf--1"></div><div class="flower__line__leaf flower__line__leaf--2"></div><div class="flower__line__leaf flower__line__leaf--3"></div><div class="flower__line__leaf flower__line__leaf--4"></div></div></div>
             <div class="flower flower--2"><div class="flower__leafs"><div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div><div class="flower__leaf flower__leaf--3"></div><div class="flower__leaf flower__leaf--4"></div><div class="flower__white-circle"></div><div class="flower__light flower__light--1"></div><div class="flower__light flower__light--2"></div></div><div class="flower__line"><div class="flower__line__leaf flower__line__leaf--1"></div><div class="flower__line__leaf flower__line__leaf--3"></div></div></div>
@@ -322,13 +388,6 @@
         </div>
     </div>
 
-    <div class="flower-container">
-      <div class="stem">
-        <div class="stem-inner"></div>   <!-- ini yang akan kita lengkungkan -->
-      </div>
-    <!-- daun & bunga di sini -->
-    </div>
-
     <script>
         onload = () => {
             const c = setTimeout(() => {
@@ -337,7 +396,7 @@
             }, 1000);
         };
 
-        const pesanAfirmasi = " Selamat atas wisudanya, Marsela. Kamu luar biasa, dan aku sangat bangga bisa melihat kamu berdiri di titik ini sekarang. Semangat terus ya untuk perjalanan barumu. Jangan lupa luangkan waktu untuk mengapresiasi dirimu sendiri atas segala lelah yang berhasil kamu lewati. Aku yakin, ini baru gerbang pembuka untuk hal-hal hebat lainnya. Tuhan Yesus memberkati langkahmu selalu, take care.";
+        const pesanAfirmasi = "Selamat atas wisudanya, Marsela. Kamu luar biasa, dan aku sangat bangga bisa melihat kamu berdiri di titik ini sekarang. Semangat terus ya untuk perjalanan barumu. Jangan lupa luangkan waktu untuk mengapresiasi dirimu sendiri atas segala lelah yang berhasil kamu taklukkan. Aku yakin, ini baru gerbang pembuka untuk hal-hal hebat lainnya. Tuhan Yesus memberkati langkahmu selalu. Take care.";
         
         let indexHuruf = 0;
         const kecepatanKetik = 60; 
@@ -353,34 +412,75 @@
         }
 
         document.getElementById('btn-lanjut').addEventListener('click', () => {
-            
-            // Putar Audio
+
+            /* ── 1. Putar audio ── */
             const audio = document.getElementById('bg-music');
-            if(audio) { audio.play().catch(e => console.log("Audio play diblokir browser")); }
+            if (audio) audio.play().catch(e => console.log("Audio diblokir browser"));
 
-            // Hilangkan Tombol
-            document.getElementById('action-btn-wrapper').style.opacity = '0';
-            document.getElementById('action-btn-wrapper').style.pointerEvents = 'none';
+            /* ── 2. Sembunyikan tombol ── */
+            const btnWrapper = document.getElementById('action-btn-wrapper');
+            btnWrapper.style.opacity      = '0';
+            btnWrapper.style.pointerEvents = 'none';
 
-            // TRIGGER 3D BLOOM ENGINE
-            document.getElementById('hero-bloom').classList.add('expand');
+            /* ── 3. Kalkulasi transform-origin presisi ke kelopak .flower--1 ──
+             *
+             * getBoundingClientRect() mengembalikan posisi post-transform di viewport.
+             * Kita perlu mengonversinya ke local-space elemen .flowers karena
+             * transform-origin bekerja dalam sistem koordinat elemen itu sendiri.
+             */
+            const flowersEl = document.querySelector('.flowers');
+            const petalEl   = document.querySelector('.flower--1 .flower__leafs');
 
-            // Transisi ke Surat dan Memudarkan Mekar
+            const petalRect    = petalEl.getBoundingClientRect();
+            const petalCenterX = petalRect.left + petalRect.width  / 2;
+            const petalCenterY = petalRect.top  + petalRect.height / 2;
+
+            /* Titik jangkar elemen .flowers di viewport (bottom:12vh, left:50%) */
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+            const elemOriginX = vw / 2;
+            const elemOriginY = vh * 0.88; /* vh - 12vh */
+
+            /* Skala aktif dari CSS custom property */
+            const cssScale = parseFloat(
+                getComputedStyle(document.documentElement)
+                .getPropertyValue('--flower-scale')
+            ) || 1.1;
+
+            /* Konversi ke local-space (bagi dengan skala aktif) */
+            const localX = (petalCenterX - elemOriginX) / cssScale;
+            const localY = (petalCenterY - elemOriginY) / cssScale;
+
+            /* ── 4. Set transform-origin SEBELUM class ditambahkan ── */
+            flowersEl.style.transformOrigin = `${localX}px ${localY}px`;
+
+            /* ── 5. Trigger zoom — double-rAF memastikan browser commit 
+             *       transformOrigin sebelum transition dimulai ── */
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    flowersEl.classList.add('push-through');
+                });
+            });
+
+            /* ── 6. Timing sinkronisasi ──
+             *
+             * t=0ms    → zoom mulai
+             * t=1100ms → kelopak sudah ~80% menutupi layar → fade #phase-1
+             * t=1900ms → zoom selesai → tampilkan phase-2
+             * t=2700ms → mulai animasi ketik surat
+             */
             setTimeout(() => {
-                document.getElementById('phase-1').style.display = 'none'; 
-                
-                // Menghilangkan bunga raksasa (Fade-out)
-                document.getElementById('hero-bloom').style.opacity = '0';
-                
+                const phase1 = document.getElementById('phase-1');
+                phase1.style.opacity      = '0';
+                phase1.style.pointerEvents = 'none';
+            }, 1100);
+
+            setTimeout(() => {
+                document.getElementById('phase-1').style.display = 'none';
                 const phase2 = document.getElementById('phase-2');
-                phase2.classList.add('active'); 
-
-                // Mulai Ngetik
-                setTimeout(() => {
-                    ketikSurat();
-                }, 800);
-
-            }, 1600); // Delay disesuaikan dengan durasi animasi mekar 3D
+                phase2.classList.add('active');
+                setTimeout(() => ketikSurat(), 800);
+            }, 1900);
         });
     </script>
 </body>
