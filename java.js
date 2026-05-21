@@ -1,3 +1,25 @@
+window.onload = () => {
+    const c = setTimeout(() => {
+        document.body.classList.remove("not-loaded");
+        clearTimeout(c);
+    }, 1000);
+};
+
+const pesanAfirmasi = "Selamat atas wisudanya, Marsela. Kamu luar biasa, dan aku sangat bangga bisa melihat kamu berdiri di titik ini sekarang. Semangat terus ya untuk perjalanan barumu. Jangan lupa luangkan waktu untuk mengapresiasi dirimu sendiri atas segala lelah yang berhasil kamu taklukkan. Aku yakin, ini baru gerbang pembuka untuk hal-hal hebat lainnya. Tuhan Yesus memberkati langkahmu selalu. Take care.";
+
+let indexHuruf = 0;
+const kecepatanKetik = 60; 
+
+function ketikSurat() {
+    if (indexHuruf < pesanAfirmasi.length) {
+        document.getElementById("text-container").innerHTML += pesanAfirmasi.charAt(indexHuruf);
+        indexHuruf++;
+        setTimeout(ketikSurat, kecepatanKetik);
+    } else {
+        document.querySelector('.cursor').style.display = 'none';
+    }
+}
+
 document.getElementById('btn-lanjut').addEventListener('click', () => {
 
     /* ── 1. Putar musik ── */
@@ -6,7 +28,7 @@ document.getElementById('btn-lanjut').addEventListener('click', () => {
 
     /* ── 2. Sembunyikan tombol ── */
     const btnWrapper = document.getElementById('action-btn-wrapper');
-    btnWrapper.style.opacity      = '0';
+    btnWrapper.style.opacity       = '0';
     btnWrapper.style.pointerEvents = 'none';
 
     /* ── 3. Kalkulasi transform-origin presisi ke kelopak .flower--1 ── */
@@ -19,7 +41,6 @@ document.getElementById('btn-lanjut').addEventListener('click', () => {
     const petalCenterY = petalRect.top  + petalRect.height / 2;
 
     // Titik "jangkar" elemen .flowers dalam viewport, SEBELUM transformnya sendiri.
-    // .flowers: left:50% → x = vw/2 | bottom:12vh → y = vh - 12vh
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const elemOriginX = vw / 2;
@@ -27,23 +48,22 @@ document.getElementById('btn-lanjut').addEventListener('click', () => {
 
     // Skala aktif dari CSS custom property
     const cssScale = parseFloat(
-        getComputedStyle(document.documentElement)
-        .getPropertyValue('--flower-scale')
+        getComputedStyle(document.documentElement).getPropertyValue('--flower-scale')
     ) || 1.1;
 
     // Konversi posisi kelopak dari viewport-space ke local-space elemen
-    // (bagi dengan skala karena transform sudah teraplikasi)
     const localX = (petalCenterX - elemOriginX) / cssScale;
     const localY = (petalCenterY - elemOriginY) / cssScale;
 
-    // Pasang transform-origin SEBELUM class push-through ditambahkan
+    /* ── 4. KUNCI KOORDINAT & STATE 1 (PRE-ZOOM) ──
+       Eksekusi sinkronus: Membunuh elemen bayangan dan tangkai bunga
+       SEKETIKA sebelum browser sempat memikirkan frame animasi. */
     flowersEl.style.transformOrigin = `${localX}px ${localY}px`;
+    flowersEl.classList.add('pre-zoom');
 
-    /* ── 4. Aktifkan zoom ──
-     *
-     * double-rAF: frame pertama browser merekam transformOrigin yang baru,
-     * frame kedua baru class ditambahkan sehingga CSS transition terpicu
-     * dari state yang sudah benar — tidak ada lompatan posisi.
+    /* ── 5. STATE 2 (PUSH-THROUGH ZOOM) ──
+     * double-rAF: frame pertama browser merekam GPU clean-up dan origin,
+     * frame kedua meledakkan scale(40) dengan ringan.
      */
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -51,19 +71,13 @@ document.getElementById('btn-lanjut').addEventListener('click', () => {
         });
     });
 
-    /* ── 5. Sinkronisasi timing ──
-     *
-     * t=0ms     → zoom mulai
-     * t=1100ms  → kelopak sudah menutupi ±80% layar → fade out phase-1
-     * t=1900ms  → sinkron dengan durasi transition 1.8s → tampilkan phase-2
-     * t=2700ms  → mulai animasi ketik surat (800ms setelah phase-2 aktif)
-     */
+    /* ── 6. Sinkronisasi timing ke Phase 2 ── */
     setTimeout(() => {
         const phase1 = document.getElementById('phase-1');
         phase1.style.transition   = 'opacity 0.5s ease';
         phase1.style.opacity      = '0';
         phase1.style.pointerEvents = 'none';
-    }, 1100);
+    }, 1000); // Memudar pas saat layar memerah
 
     setTimeout(() => {
         document.getElementById('phase-1').style.display = 'none';
@@ -72,5 +86,5 @@ document.getElementById('btn-lanjut').addEventListener('click', () => {
         phase2.classList.add('active');
 
         setTimeout(() => ketikSurat(), 800);
-    }, 1900);
+    }, 1700); // 1.7 detik adalah sweet spot untuk kelonggaran transisi
 });
