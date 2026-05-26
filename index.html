@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marsela</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
-    
+    <title> Marsela - Wisuda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
         *, *::after, *::before { padding: 0; margin: 0; box-sizing: border-box; }
 
@@ -29,26 +29,19 @@
             margin: 0; padding: 0;
             min-height: 100vh; min-height: 100dvh;
             background-color: var(--dark-color);
-            overflow: hidden; perspective: 1000px;
+            overflow-x: hidden; overflow-y: auto;
+            perspective: 1000px;
             font-family: 'Inter', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        /* ── GLOBAL BACKGROUND ── */
-        .night {
-            position: fixed; inset: 0; width: 100%; height: 100%; filter: blur(0.1vmin);
-            z-index: 0; 
-            background-image: radial-gradient(ellipse at top, transparent 0%, var(--dark-color)), radial-gradient(ellipse at bottom, var(--dark-color), rgba(255, 105, 180, 0.15)), repeating-linear-gradient(220deg, black 0px, black 19px, transparent 19px, transparent 22px), repeating-linear-gradient(189deg, black 0px, black 19px, transparent 19px, transparent 22px), repeating-linear-gradient(148deg, black 0px, black 19px, transparent 19px, transparent 22px), linear-gradient(90deg, #ff1e56, #f0f0f0);
+            touch-action: pan-y; /* Mengizinkan scroll vertikal tapi mengunci horizontal untuk swipe */
         }
 
         /* ── PHASE 1 (TAMAN BUNGA & TOMBOL) ── */
         #phase-1 {
             position: absolute; inset: 0; z-index: 10;
             display: flex; justify-content: center; align-items: flex-end;
-            transition: opacity 1s ease; /* Transisi memudar yang mulus */
+            transition: opacity 1s ease;
         }
 
-        /* TEKS JANGKAR PENYEIMBANG LANGIT */
         .hero-text {
             position: absolute; top: 15vh; width: 100%; text-align: center; z-index: 5;
             opacity: 0; animation: fadeInText 3s ease 2s forwards;
@@ -66,39 +59,31 @@
         }
 
         .btn-lanjut {
-            background: rgba(201, 24, 74, 0.25); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            background: rgba(201, 24, 74, 0.25); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
             border: 1px solid rgba(255, 179, 198, 0.5); color: #ffccd5;
             padding: clamp(12px, 2vh, 16px) clamp(32px, 5vw, 48px);
             border-radius: 50px; font-family: 'Playfair Display', serif;
             font-size: clamp(1rem, 2.5vw, 1.2rem); font-style: italic; cursor: pointer; letter-spacing: 0.1em;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 179, 198, 0.2); 
-            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 179, 198, 0.2); transition: all 0.4s ease;
         }
-
         .btn-lanjut:hover {
             background: rgba(255, 77, 109, 0.4); border-color: #fff; color: #fff;
             transform: translateY(-5px) scale(1.02); box-shadow: 0 8px 30px rgba(255, 77, 109, 0.6);
         }
-
         @keyframes fadeInBtn { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
 
-        /* ── KONTROL BUKET ── */
         .flowers { 
             position: absolute; bottom: 12vh; left: 50%;
-            transform: translateX(-50%) scale(var(--flower-scale)); 
-            transform-origin: bottom center;
+            transform: translateX(-50%) scale(var(--flower-scale)); transform-origin: bottom center;
         }
 
         .flower { 
-            position: absolute; bottom: 2vmin; left: 50%; 
-            transform-origin: bottom center; z-index: 10; 
+            position: absolute; bottom: 2vmin; left: 50%; transform-origin: bottom center; z-index: 10; 
             --base-rot: 0deg; --base-scale: 1; --base-y: 0vmin;
             transform: translateX(-50%) translateY(var(--base-y)) rotate(var(--base-rot)) scale(var(--base-scale));
             animation: bouquet-sway var(--fl-speed, 4s) ease-in-out infinite;
         }
 
-        /* ── FORMASI Z-INDEX BUKET ── */
         .flower--1 { --base-rot: 0deg;   --base-scale: 1.1;  --base-y: 0vmin;   z-index: 2; --fl-speed: 4s; }
         .flower--2 { --base-rot: 14deg;  --base-scale: 1;    --base-y: 0vmin;   z-index: 3; --fl-speed: 4.2s; }
         .flower--3 { --base-rot: -14deg; --base-scale: 1;    --base-y: 0vmin;   z-index: 3; --fl-speed: 4.1s; }
@@ -143,7 +128,6 @@
             100% { filter: blur(12vmin); transform: translate(-50%, -100%) scale(1.3); opacity: 1; box-shadow: 0 0 40px var(--petal-light); }
         }
 
-        /* ── STRUKTUR KELOPAK MAWAR (DISERAGAMKAN SEMPURNA) ── */
         .flower__leaf {
             position: absolute; bottom: 0; left: 50%; width: 8vmin; height: 11vmin;
             border-radius: 51% 49% 47% 53%/44% 45% 55% 69%;
@@ -158,83 +142,29 @@
         .flower__white-circle { position: absolute; left: -3.5vmin; top: -3vmin; width: 9vmin; height: 4vmin; border-radius: 50%; background-color: #fff; }
         .flower__white-circle::after { content: ""; position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); width: 60%; height: 60%; border-radius: inherit; background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 12px), repeating-linear-gradient(45deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 12px), linear-gradient(90deg, #ffb3c6, #ff758f); }
         
-        /* ── TANGKAI MELENGKUNG ── */
         .flower__line { 
-            width: 1.5vmin; margin-left: -0.75vmin;
-            position: relative; z-index: 1; 
+            width: 1.5vmin; margin-left: -0.75vmin; position: relative; z-index: 1; 
             background-image: linear-gradient(to top, transparent 10%, var(--stem-color), var(--petal-dark)); 
-            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5); 
-            transform-origin: bottom center;
-            animation: grow-flower-tree 4s backwards; 
+            box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5); transform-origin: bottom center; animation: grow-flower-tree 4s backwards; 
         }
 
-        .flower--2 .flower__line, .flower--4 .flower__line, .flower--6 .flower__line, .flower--8 .flower__line, .flower--10 .flower__line {
-            width: 6vmin; margin-left: -3vmin; 
-            background-image: none; box-shadow: none;
-            border-right: 1.5vmin solid var(--stem-color);
-            border-radius: 50%; 
-        }
+        .flower--2 .flower__line, .flower--4 .flower__line, .flower--6 .flower__line, .flower--8 .flower__line, .flower--10 .flower__line { width: 6vmin; margin-left: -3vmin; background-image: none; box-shadow: none; border-right: 1.5vmin solid var(--stem-color); border-radius: 50%; }
+        .flower--3 .flower__line, .flower--5 .flower__line, .flower--7 .flower__line, .flower--9 .flower__line { width: 6vmin; margin-left: -3vmin; background-image: none; box-shadow: none; border-left: 1.5vmin solid var(--stem-color); border-radius: 50%; }
 
-        .flower--3 .flower__line, .flower--5 .flower__line, .flower--7 .flower__line, .flower--9 .flower__line {
-            width: 6vmin; margin-left: -3vmin;
-            background-image: none; box-shadow: none;
-            border-left: 1.5vmin solid var(--stem-color);
-            border-radius: 50%;
-        }
-
-        /* ── DAUN LENTUR ── */
         .flower__line__leaf { 
-            --w: 7vmin; --h: calc(var(--w) + 2vmin); 
-            position: absolute; top: 20%; 
-            width: var(--w); height: var(--h); 
-            border-top-right-radius: var(--h); border-bottom-left-radius: var(--h); 
-            background-image: linear-gradient(to top, rgba(128, 15, 47, 0.4), var(--petal-dark)); 
-            transform-origin: left center;
-            animation: swayLeaf 2.4s ease-in-out infinite;
-            animation-delay: inherit;
+            --w: 7vmin; --h: calc(var(--w) + 2vmin); position: absolute; top: 20%; width: var(--w); height: var(--h); 
+            border-top-right-radius: var(--h); border-bottom-left-radius: var(--h); background-image: linear-gradient(to top, rgba(128, 15, 47, 0.4), var(--petal-dark)); 
+            transform-origin: left center; animation: swayLeaf 2.4s ease-in-out infinite; animation-delay: inherit;
         }
-
         .flower__line__leaf--1 { transform: rotate(70deg) rotateY(30deg); animation-delay: 0.2s; }
         .flower__line__leaf--2 { top: 45%; transform: rotate(70deg) rotateY(30deg); animation-delay: 0.2s; }
-        .flower__line__leaf--3 { 
-            border-top-right-radius: 0; border-bottom-left-radius: 0; 
-            border-top-left-radius: var(--h); border-bottom-right-radius: var(--h); 
-            top: 12%; transform: rotate(-70deg) rotateY(30deg); 
-            transform-origin: right center; animation-delay: 0.4s; 
-        }
-        .flower__line__leaf--4 { 
-            border-top-right-radius: 0; border-bottom-left-radius: 0; 
-            border-top-left-radius: var(--h); border-bottom-right-radius: var(--h); 
-            top: 40%; transform: rotate(-70deg) rotateY(30deg); 
-            transform-origin: right center; animation-delay: 0.4s; 
-        }
+        .flower__line__leaf--3 { border-top-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: var(--h); border-bottom-right-radius: var(--h); top: 12%; transform: rotate(-70deg) rotateY(30deg); transform-origin: right center; animation-delay: 0.4s; }
+        .flower__line__leaf--4 { border-top-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: var(--h); border-bottom-right-radius: var(--h); top: 40%; transform: rotate(-70deg) rotateY(30deg); transform-origin: right center; animation-delay: 0.4s; }
 
-        .flower--1 .flower__line__leaf--1, .flower--1 .flower__line__leaf--2,
-        .flower--2 .flower__line__leaf--1, .flower--4 .flower__line__leaf--1, .flower--6 .flower__line__leaf--1, .flower--8 .flower__line__leaf--1, .flower--10 .flower__line__leaf--1,
-        .flower--2 .flower__line__leaf--2, .flower--4 .flower__line__leaf--2, .flower--6 .flower__line__leaf--2, .flower--8 .flower__line__leaf--2, .flower--10 .flower__line__leaf--2 {
-            left: 100%; 
-        }
-        .flower--1 .flower__line__leaf--3, .flower--1 .flower__line__leaf--4,
-        .flower--2 .flower__line__leaf--3, .flower--4 .flower__line__leaf--3, .flower--6 .flower__line__leaf--3, .flower--8 .flower__line__leaf--3, .flower--10 .flower__line__leaf--3,
-        .flower--2 .flower__line__leaf--4, .flower--4 .flower__line__leaf--4, .flower--6 .flower__line__leaf--4, .flower--8 .flower__line__leaf--4, .flower--10 .flower__line__leaf--4 {
-            right: 0%; left: auto;
-        }
-
-        .flower--3 .flower__line__leaf--1, .flower--5 .flower__line__leaf--1, .flower--7 .flower__line__leaf--1, .flower--9 .flower__line__leaf--1,
-        .flower--3 .flower__line__leaf--2, .flower--5 .flower__line__leaf--2, .flower--7 .flower__line__leaf--2, .flower--9 .flower__line__leaf--2 {
-            left: 0%;
-        }
-        .flower--3 .flower__line__leaf--3, .flower--5 .flower__line__leaf--3, .flower--7 .flower__line__leaf--3, .flower--9 .flower__line__leaf--3,
-        .flower--3 .flower__line__leaf--4, .flower--5 .flower__line__leaf--4, .flower--7 .flower__line__leaf--4, .flower--9 .flower__line__leaf--4 {
-            right: 100%; left: auto;
-        }
-        
-        @keyframes swayLeaf {
-            0%   { transform: rotate(0deg) translateY(0); }
-            40%  { transform: rotate(3.5deg) translateY(-0.5vmin); }
-            80%  { transform: rotate(-4.2deg) translateY(0.4vmin); }
-            100% { transform: rotate(0deg) translateY(0); }
-        }
+        .flower--1 .flower__line__leaf--1, .flower--1 .flower__line__leaf--2, .flower--2 .flower__line__leaf--1, .flower--4 .flower__line__leaf--1, .flower--6 .flower__line__leaf--1, .flower--8 .flower__line__leaf--1, .flower--10 .flower__line__leaf--1, .flower--2 .flower__line__leaf--2, .flower--4 .flower__line__leaf--2, .flower--6 .flower__line__leaf--2, .flower--8 .flower__line__leaf--2, .flower--10 .flower__line__leaf--2 { left: 100%; }
+        .flower--1 .flower__line__leaf--3, .flower--1 .flower__line__leaf--4, .flower--2 .flower__line__leaf--3, .flower--4 .flower__line__leaf--3, .flower--6 .flower__line__leaf--3, .flower--8 .flower__line__leaf--3, .flower--10 .flower__line__leaf--3, .flower--2 .flower__line__leaf--4, .flower--4 .flower__line__leaf--4, .flower--6 .flower__line__leaf--4, .flower--8 .flower__line__leaf--4, .flower--10 .flower__line__leaf--4 { right: 0%; left: auto; }
+        .flower--3 .flower__line__leaf--1, .flower--5 .flower__line__leaf--1, .flower--7 .flower__line__leaf--1, .flower--9 .flower__line__leaf--1, .flower--3 .flower__line__leaf--2, .flower--5 .flower__line__leaf--2, .flower--7 .flower__line__leaf--2, .flower--9 .flower__line__leaf--2 { left: 0%; }
+        .flower--3 .flower__line__leaf--3, .flower--5 .flower__line__leaf--3, .flower--7 .flower__line__leaf--3, .flower--9 .flower__line__leaf--3, .flower--3 .flower__line__leaf--4, .flower--5 .flower__line__leaf--4, .flower--7 .flower__line__leaf--4, .flower--9 .flower__line__leaf--4 { right: 100%; left: auto; }
         
         .flower__light { position: absolute; bottom: 0vmin; width: 1vmin; height: 1vmin; background-color: #fffb00; border-radius: 50%; filter: blur(0.2vmin); animation: light-ans 4s linear infinite backwards; }
         .flower__light:nth-child(odd) { background-color: var(--petal-light); }
@@ -243,11 +173,7 @@
         .flower__light--3 { left: -6vmin; animation-delay: 0.3s; }
         .flower__light--4 { left: 6vmin; animation-delay: 0.9s; }
         
-        /* RUMPUT BERDAUN */
-        .flower__grass { 
-            --c: var(--petal-dark); --line-w: 1.5vmin; position: absolute; bottom: 12vmin; left: -7vmin; display: flex; flex-direction: column; align-items: flex-end; 
-            z-index: 7; transform-origin: bottom center; transform: rotate(-48deg) rotateY(40deg); 
-        }
+        .flower__grass { --c: var(--petal-dark); --line-w: 1.5vmin; position: absolute; bottom: 12vmin; left: -7vmin; display: flex; flex-direction: column; align-items: flex-end; z-index: 7; transform-origin: bottom center; transform: rotate(-48deg) rotateY(40deg); }
         .flower__grass--1 { animation: moving-grass 2s linear infinite; }
         .flower__grass--2 { left: 2vmin; bottom: 10vmin; transform: scale(0.5) rotate(75deg) rotateX(10deg) rotateY(-200deg); opacity: 0.8; z-index: 1; animation: moving-grass--2 1.5s linear infinite; }
         .flower__grass--top { width: 7vmin; height: 10vmin; border-top-right-radius: 100%; border-right: var(--line-w) solid var(--c); transform-origin: bottom center; transform: rotate(-2deg); }
@@ -255,21 +181,13 @@
         .flower__grass__leaf { --size: 10vmin; position: absolute; width: calc(var(--size) * 2.1); height: var(--size); border-top-left-radius: var(--size); border-top-right-radius: var(--size); background-image: linear-gradient(to top, transparent, transparent 30%, var(--c)); z-index: 100; }
         .flower__grass__leaf--1 { top: -6%; left: 30%; --size: 6vmin; transform: rotate(-20deg); animation: growing-grass-ans--1 2s 2.6s backwards; }
         .flower__grass__leaf--2 { top: -5%; left: -110%; --size: 6vmin; transform: rotate(10deg); animation: growing-grass-ans--2 2s 2.4s linear backwards; }
-        .flower__grass__leaf--3 { top: 5%; left: 60%; --size: 8vmin; transform: rotate(-18deg) rotateX(-20deg); animation: growing-grass-ans--3 2s 2.2s linear backwards; }
-        .flower__grass__leaf--4 { top: 6%; left: -135%; --size: 8vmin; transform: rotate(2deg); animation: growing-grass-ans--4 2s 2s linear backwards; }
+        .flower__grass__leaf--3 { top: 5%; left: 60%; --size: 8vmin; transform: rotate(-18deg) rotateX(-20deg) scale(0); animation: growing-grass-ans--3 2s 2.2s linear backwards; }
+        .flower__grass__leaf--4 { top: 6%; left: -135%; --size: 8vmin; transform: rotate(2deg) scale(0); animation: growing-grass-ans--4 2s 2s linear backwards; }
         .flower__grass__overlay { position: absolute; top: -10%; right: 0%; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); filter: blur(1.5vmin); z-index: 100; }
 
-        @keyframes bouquet-sway {
-            0%, 100% { transform: translateX(-50%) translateY(var(--base-y)) rotate(calc(var(--base-rot) + 1.5deg)) scale(var(--base-scale)); }
-            50%      { transform: translateX(-50%) translateY(var(--base-y)) rotate(calc(var(--base-rot) - 1.5deg)) scale(var(--base-scale)); }
-        }
-        @keyframes growing-grass-ans--1 { 0% { transform-origin: bottom left; transform: rotate(-20deg) scale(0); } }
-        @keyframes growing-grass-ans--2 { 0% { transform-origin: bottom right; transform: rotate(10deg) scale(0); } }
-        @keyframes growing-grass-ans--3 { 0% { transform-origin: bottom left; transform: rotate(-18deg) rotateX(-20deg) scale(0); } }
-        @keyframes growing-grass-ans--4 { 0% { transform-origin: bottom right; transform: rotate(2deg) scale(0); } }
-        @keyframes light-ans { 0% { opacity: 0; transform: translateY(0vmin); } 25% { opacity: 1; transform: translateY(-5vmin) translateX(-2vmin); } 50% { opacity: 1; transform: translateY(-15vmin) translateX(2vmin); filter: blur(0.2vmin); } 75% { transform: translateY(-20vmin) translateX(-2vmin); filter: blur(0.2vmin); } 100% { transform: translateY(-30vmin); opacity: 0; filter: blur(1vmin); } }
-        @keyframes blooming-leaf-right { 0% { transform-origin: left; transform: rotate(70deg) rotateY(30deg) scale(0); } }
-        @keyframes blooming-leaf-left { 0% { transform-origin: right; transform: rotate(-70deg) rotateY(30deg) scale(0); } }
+        @keyframes growing-grass-ans--3 { 0% { transform-origin: bottom left; transform: rotate(-18deg) rotateX(-20deg) scale(0); } 100% { transform: rotate(-18deg) rotateX(-20deg) scale(1); } }
+        @keyframes growing-grass-ans--4 { 0% { transform-origin: bottom right; transform: rotate(2deg) scale(0); } 100% { transform: rotate(2deg) scale(1); } }
+
         @keyframes grow-flower-tree { 0% { height: 0; border-radius: 1vmin; } }
         @keyframes blooming-flower { 0% { transform: scale(0); } }
         @keyframes moving-grass { 0%, 100% { transform: rotate(-48deg) rotateY(40deg); } 50% { transform: rotate(-50deg) rotateY(40deg); } }
@@ -278,33 +196,98 @@
         @keyframes growing-grass-ans { 0% { transform: scale(0); } }
         .not-loaded * { animation-play-state: paused !important; }
 
-        /* ── PHASE 2 (SURAT AFIRMASI MESIN TIK) ── */
+        /* ── PHASE 2 (SURAT AFIRMASI & COVER FLOW CAROUSEL) ── */
         #phase-2 {
-            position: fixed; inset: 0; z-index: 100;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none;
-            background-color: transparent; transition: opacity 1s ease; padding: 24px;
+            position: relative; width: 100%; min-height: 100vh; min-height: 100dvh; z-index: 100;
+            display: none; flex-direction: column; justify-content: flex-start; align-items: center;
+            opacity: 0; padding: clamp(20px, 4vw, 50px) 0; transition: opacity 1.2s ease;
         }
-        #phase-2.active { opacity: 1; pointer-events: auto; }
+        #phase-2.active { display: flex; opacity: 1; }
 
         .letter-card {
-            background: rgba(20, 5, 10, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 179, 198, 0.2);
-            padding: 40px; border-radius: 24px;
-            max-width: 600px; width: 100%; color: #ffccd5; text-align: left;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-            transform: translateY(30px); transition: transform 1.2s ease 0.5s;
+            background: rgba(20, 5, 10, 0.55); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 179, 198, 0.15); padding: clamp(24px, 5vw, 40px); border-radius: 24px;
+            max-width: 600px; width: calc(100% - 32px); color: #ffccd5; text-align: left;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); transform: translateY(20px); transition: transform 1s ease;
+            margin-bottom: 25px; z-index: 200;
         }
         #phase-2.active .letter-card { transform: translateY(0); }
 
         .letter-title {
-            font-family: 'Playfair Display', serif; font-size: 2rem; font-style: italic; color: var(--petal-mid);
-            margin-bottom: 20px; border-bottom: 1px solid rgba(255, 77, 109, 0.3); padding-bottom: 10px;
+            font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.3rem); font-style: italic; color: var(--petal-mid);
+            margin-bottom: 20px; border-bottom: 1px solid rgba(255, 77, 109, 0.25); padding-bottom: 10px;
         }
 
-        .typewriter-text { font-size: 1.05rem; line-height: 1.8; color: #e2e8f0; font-weight: 300; min-height: 150px; }
+        .typewriter-text { font-size: clamp(1rem, 2.5vw, 1.05rem); line-height: 1.8; color: #e2e8f0; font-weight: 300; min-height: 100px; }
         .cursor { display: inline-block; width: 2px; height: 1.2em; background-color: var(--petal-mid); vertical-align: middle; animation: blink 0.7s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* ── INTERACTIVE COVER FLOW CAROUSEL SYSTEM ── */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%; max-width: 800px; height: 350px; 
+            overflow: hidden; touch-action: pan-y; z-index: 10;
+        }
+        
+        .carousel-track {
+            position: relative; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .carousel-item {
+            position: absolute; 
+            width: 55%; max-width: 250px; 
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, opacity, filter;
+            pointer-events: none; /* Cegah interaksi di foto pinggir */
+            user-select: none;
+        }
+
+        .polaroid-frame {
+            background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.12); padding: 10px 10px 32px 10px;
+            border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            pointer-events: auto; /* Aktifkan event sentuhan di frame */
+        }
+
+        .polaroid-image-wrapper {
+            width: 100%; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 6px; background: #140b0e;
+        }
+        .polaroid-image-wrapper img {
+            width: 100%; height: 100%; object-fit: cover;
+            pointer-events: none; /* Mencegah default drag gambar browser */
+        }
+
+        /* ── Swipe Hint ── */
+        .swipe-hint {
+            text-align: center; color: rgba(255, 204, 213, 0.6);
+            font-size: 0.85rem; letter-spacing: 0.1em;
+            margin-top: 15px; font-style: italic; z-index: 5;
+            animation: pulse-hint 2s infinite;
+        }
+        @keyframes pulse-hint { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        /* ── NEW: FLOATING REMINDER TEXT CONTAINER (ABOVE PHOTOS) ── */
+        .photo-reminder-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: rgba(255, 204, 213, 0.85); /* Slightly muted light pink */
+            font-size: clamp(1.1rem, 3vw, 1.3rem); /* Responsive size */
+            text-align: center;
+            width: calc(100% - 32px);
+            max-width: 600px;
+            margin-bottom: 20px; /* Space between text and photos */
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1s ease 0.8s, transform 1s ease 0.8s; /* Delayed fade in */
+            line-height: 1.4;
+            z-index: 5;
+        }
+
+        #phase-2.active .photo-reminder-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
     </style>
 </head>
@@ -313,7 +296,7 @@
     <div class="night"></div>
 
     <div id="phase-1">
-
+        <div class="hero-text"><p>For Marsela</p></div>
         <div class="flowers">
             <div class="flower flower--1"><div class="flower__leafs"><div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div><div class="flower__leaf flower__leaf--3"></div><div class="flower__leaf flower__leaf--4"></div><div class="flower__white-circle"></div><div class="flower__light flower__light--1"></div><div class="flower__light flower__light--2"></div><div class="flower__light flower__light--3"></div><div class="flower__light flower__light--4"></div></div><div class="flower__line"><div class="flower__line__leaf flower__line__leaf--1"></div><div class="flower__line__leaf flower__line__leaf--2"></div><div class="flower__line__leaf flower__line__leaf--3"></div><div class="flower__line__leaf flower__line__leaf--4"></div></div></div>
             <div class="flower flower--2"><div class="flower__leafs"><div class="flower__leaf flower__leaf--1"></div><div class="flower__leaf flower__leaf--2"></div><div class="flower__leaf flower__leaf--3"></div><div class="flower__leaf flower__leaf--4"></div><div class="flower__white-circle"></div><div class="flower__light flower__light--1"></div><div class="flower__light flower__light--2"></div></div><div class="flower__line"><div class="flower__line__leaf flower__line__leaf--1"></div><div class="flower__line__leaf flower__line__leaf--3"></div></div></div>
@@ -328,19 +311,36 @@
             <div class="growing-grass"><div class="flower__grass flower__grass--1"><div class="flower__grass--top"></div><div class="flower__grass--bottom"></div><div class="flower__grass__leaf flower__grass__leaf--1"></div><div class="flower__grass__leaf flower__grass__leaf--2"></div><div class="flower__grass__leaf flower__grass__leaf--3"></div><div class="flower__grass__leaf flower__grass__leaf--4"></div><div class="flower__grass__overlay"></div></div></div>
             <div class="growing-grass"><div class="flower__grass flower__grass--2"><div class="flower__grass--top"></div><div class="flower__grass--bottom"></div><div class="flower__grass__leaf flower__grass__leaf--1"></div><div class="flower__grass__leaf flower__grass__leaf--2"></div><div class="flower__grass__leaf flower__grass__leaf--3"></div><div class="flower__grass__leaf flower__grass__leaf--4"></div><div class="flower__grass__overlay"></div></div></div>
         </div>
-
         <div class="action-container" id="action-btn-wrapper">
-            <button id="btn-lanjut" class="btn-lanjut">Buka</button>
+            <button id="btn-lanjut" class="btn-lanjut">Lihat Pesan</button>
         </div>
     </div>
 
     <div id="phase-2">
         <div class="letter-card">
-            <h1 class="letter-title">Teruntuk Marsela...</h1>
+            <h1 class="letter-title">Selamat ya cantik...</h1>
             <div class="typewriter-text">
                 <span id="text-container"></span><span class="cursor"></span>
             </div>
         </div>
+
+        <div class="photo-reminder-text">
+            A little reminder of how an amazing person you are
+        </div>
+
+        <div class="carousel-wrapper" id="carousel-wrapper">
+            <div class="carousel-track" id="carousel-track">
+                <div class="carousel-item"><div class="polaroid-frame"><div class="polaroid-image-wrapper"><img src="acel1.jpeg" alt="Acel 1"></div></div></div>
+                <div class="carousel-item"><div class="polaroid-frame"><div class="polaroid-image-wrapper"><img src="acel2.jpeg" alt="Acel 2"></div></div></div>
+                <div class="carousel-item"><div class="polaroid-frame"><div class="polaroid-image-wrapper"><img src="acel3.jpeg" alt="Acel 3"></div></div></div>
+                <div class="carousel-item"><div class="polaroid-frame"><div class="polaroid-image-wrapper"><img src="acel4.jpeg" alt="Acel 4"></div></div></div>
+                <div class="carousel-item"><div class="polaroid-frame"><div class="polaroid-image-wrapper"><img src="acel5.jpeg" alt="Acel 5"></div></div></div>
+                <div class="carousel-item"><div class="polaroid-frame"><div class="polaroid-image-wrapper"><img src="acel6.jpeg" alt="Acel 6"></div></div></div>
+                <div class="carousel-item"><div class="polaroid-frame"><div class="polaroid-image-wrapper"><img src="acel7.jpeg" alt="Acel 7"></div></div></div>
+                <div class="carousel-item"><div class="polaroid-frame"><div class="polaroid-image-wrapper"><img src="acel8.jpeg" alt="Acel 8"></div></div></div>
+            </div>
+        </div>
+        <div class="swipe-hint">&lt;  A glimpse into your grace &gt;</div>
     </div>
 
     <script>
@@ -351,10 +351,30 @@
             }, 1000);
         };
 
-        const pesanAfirmasi = "Selamat atas wisudanya, Marsela. Kamu luar biasa, dan aku sangat bangga bisa melihat kamu berdiri di titik ini sekarang. Semangat terus ya untuk perjalanan barumu. Jangan lupa luangkan waktu untuk mengapresiasi dirimu sendiri atas segala lelah yang berhasil kamu taklukkan. Aku yakin, ini baru gerbang pembuka untuk hal-hal hebat lainnya. Tuhan Yesus memberkati langkahmu selalu. Take care.";
+const pesanAfirmasi = "Selamat wisuda, Marsela. Masih nggak nyangka akhirnya bisa liat kamu berdiri di titik ini. Aku tau perjuanganmu sejauh ini nggak gampang, tapi kamu berhasil ngelewatin semuanya dengan keren banget. Jangan lupa buat istirahat dan bangga sama diri sendiri setelah semua lelah yang kamu tempuh. Apapun rintangan di depan nanti, aku yakin kamu pasti bisa handle itu semua. Tuhan Yesus selalu jaga dan berkati langkahmu. Keep being amazing, take care.";
         
         let indexHuruf = 0;
         const kecepatanKetik = 60; 
+
+        /* ── PARTICLE ENGINE: KELOPAK MAWAR JATUH ── */
+        const nightSky = document.querySelector('.night');
+        const totalPetals = 25; // Jumlah kelopak di layar
+
+        for (let i = 0; i < totalPetals; i++) {
+            let petal = document.createElement('div');
+            petal.classList.add('falling-petal');
+            
+            // Randomisasi posisi Horizontal (Kiri ke Kanan)
+            petal.style.left = Math.random() * 100 + 'vw';
+            
+            // Randomisasi kecepatan jatuh (antara 6 hingga 12 detik)
+            petal.style.animationDuration = (Math.random() * 6 + 6) + 's';
+            
+            // Randomisasi delay agar tidak jatuh serentak (0 hingga 10 detik)
+            petal.style.animationDelay = (Math.random() * 10) + 's';
+            
+            nightSky.appendChild(petal);
+        }
 
         function ketikSurat() {
             if (indexHuruf < pesanAfirmasi.length) {
@@ -366,22 +386,142 @@
             }
         }
 
-        document.getElementById('btn-lanjut').addEventListener('click', () => {
+        /* ── COVER FLOW CAROUSEL ENGINE ── */
+        const track = document.getElementById('carousel-track');
+        const items = Array.from(track.children);
+        const totalItems = items.length;
+        
+        let currentIndex = 0;
+        let autoplayTimer = null;
 
-            /* ── 1. Sembunyikan Phase 1 (Fade Out Mulus) ── */
+        function updateCarousel() {
+            items.forEach((item, i) => {
+                // Algoritma Matrix Cincin (Infinite Loop)
+                let diff = (i - currentIndex + totalItems) % totalItems;
+                if (diff > Math.floor(totalItems / 2)) {
+                    diff -= totalItems;
+                }
+
+                // Pengkondisian 3D Curve
+                if (diff === 0) {
+                    // Center (Active)
+                    item.style.transform = 'translateX(0) translateY(0) scale(1) rotate(0deg)';
+                    item.style.zIndex = 10;
+                    item.style.opacity = 1;
+                    item.style.filter = 'blur(0px) saturate(1)';
+                } else if (diff === 1) {
+                    // Kanan
+                    item.style.transform = 'translateX(65%) translateY(15px) scale(0.8) rotate(8deg)';
+                    item.style.zIndex = 5;
+                    item.style.opacity = 0.6;
+                    item.style.filter = 'blur(2px) saturate(0.8)';
+                } else if (diff === -1) {
+                    // Kiri
+                    item.style.transform = 'translateX(-65%) translateY(15px) scale(0.8) rotate(-8deg)';
+                    item.style.zIndex = 5;
+                    item.style.opacity = 0.6;
+                    item.style.filter = 'blur(2px) saturate(0.8)';
+                } else {
+                    // Sembunyikan yang di belakang
+                    item.style.transform = `translateX(${diff > 0 ? 100 : -100}%) translateY(40px) scale(0.6) rotate(${diff * 15}deg)`;
+                    item.style.zIndex = 1;
+                    item.style.opacity = 0;
+                    item.style.filter = 'blur(4px)';
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+            resetAutoplay();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel();
+            resetAutoplay();
+        }
+
+        function startAutoplay() {
+            if(autoplayTimer) clearInterval(autoplayTimer);
+            autoplayTimer = setInterval(nextSlide, 3500);
+        }
+
+        function resetAutoplay() {
+            if(autoplayTimer) clearInterval(autoplayTimer);
+            startAutoplay();
+        }
+
+        /* ── SWIPE LOGIC ENGINE ── */
+        let startX = 0;
+        let isDragging = false;
+        const wrapper = document.getElementById('carousel-wrapper');
+
+        // Touch Events (HP)
+        wrapper.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            if(autoplayTimer) clearInterval(autoplayTimer); // Pause saat disentuh
+        }, { passive: true });
+
+        wrapper.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            let endX = e.changedTouches[0].clientX;
+            let diffX = startX - endX;
+
+            if (diffX > 40) { // Swipe Kiri -> Next
+                nextSlide();
+            } else if (diffX < -40) { // Swipe Kanan -> Prev
+                prevSlide();
+            } else {
+                resetAutoplay(); // Resume jika swipe tidak cukup jauh
+            }
+            isDragging = false;
+        });
+
+        // Mouse Events (Bisa digeser pakai klik di Laptop)
+        wrapper.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            isDragging = true;
+            if(autoplayTimer) clearInterval(autoplayTimer);
+        });
+
+        wrapper.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            let endX = e.clientX;
+            let diffX = startX - endX;
+
+            if (diffX > 40) { nextSlide(); } 
+            else if (diffX < -40) { prevSlide(); } 
+            else { resetAutoplay(); }
+            isDragging = false;
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            if(isDragging) {
+                isDragging = false;
+                resetAutoplay();
+            }
+        });
+
+        /* ── MAIN SWITCH HANDLER ── */
+        document.getElementById('btn-lanjut').addEventListener('click', () => {
             const phase1 = document.getElementById('phase-1');
             phase1.style.opacity = '0';
             phase1.style.pointerEvents = 'none';
 
-            /* ── 2. Tampilkan Phase 2 (Surat) ── */
             setTimeout(() => {
-                phase1.style.display = 'none'; // Hapus taman dari render tree
+                phase1.style.display = 'none';
                 const phase2 = document.getElementById('phase-2');
-                phase2.classList.add('active'); // Memunculkan surat dengan efek slide-up
+                phase2.classList.add('active'); 
                 
-                // Mulai animasi ngetik setelah surat muncul sempurna
-                setTimeout(() => ketikSurat(), 800);
-            }, 1000); // 1 detik jeda untuk sinkron dengan fade-out phase 1
+                // Inisialisasi Carousel 3D
+                updateCarousel();
+                startAutoplay();
+                
+                setTimeout(() => ketikSurat(), 600);
+            }, 1000); 
         });
     </script>
 </body>
